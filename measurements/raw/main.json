@@ -1,0 +1,534 @@
+{
+  "model": "qwen3.8-flash-next-huihui:iq3s",
+  "cuda": {
+    "init_rc": 0,
+    "name": "NVIDIA RTX Spark N1X (6144-core Blackwell RTX GPU)",
+    "total_mem_rc": 0,
+    "total_mem": 117826244608,
+    "integrated_rc": 0,
+    "integrated": true,
+    "mem_get_info_rc": 0,
+    "mem_get_info": {
+      "free": 117616529408,
+      "total": 117826244608
+    }
+  },
+  "points": [
+    {
+      "label": "baseline",
+      "t": 1793878164.2955892,
+      "nvml_used": 3048259584,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 3050676224,
+      "pdh_shared": 72925184,
+      "ram_available": 47570501632,
+      "commit_available": 129744289792
+    },
+    {
+      "label": "loading",
+      "t": 1793878165.3294659,
+      "nvml_used": 3036856320,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 3039285248,
+      "pdh_shared": 83267584,
+      "ram_available": 47560417280,
+      "commit_available": 129891889152
+    },
+    {
+      "label": "loading",
+      "t": 1793878166.3315349,
+      "nvml_used": 3036299264,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 3038720000,
+      "pdh_shared": 78024704,
+      "ram_available": 47544537088,
+      "commit_available": 129749340160
+    },
+    {
+      "label": "loading",
+      "t": 1793878167.333629,
+      "nvml_used": 3165470720,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 3168280576,
+      "pdh_shared": 139792384,
+      "ram_available": 47284842496,
+      "commit_available": 129231638528
+    },
+    {
+      "label": "loading",
+      "t": 1793878168.3452985,
+      "nvml_used": 39594770432,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 39597854720,
+      "pdh_shared": 139792384,
+      "ram_available": 47130361856,
+      "commit_available": 45919154176
+    },
+    {
+      "label": "loading",
+      "t": 1793878169.34522,
+      "nvml_used": 57749815296,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57753706496,
+      "pdh_shared": 483725312,
+      "ram_available": 46774833152,
+      "commit_available": 45568110592
+    },
+    {
+      "label": "loading",
+      "t": 1793878170.348934,
+      "nvml_used": 57749815296,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57753706496,
+      "pdh_shared": 483725312,
+      "ram_available": 46750347264,
+      "commit_available": 45589659648
+    },
+    {
+      "label": "loading",
+      "t": 1793878171.3542871,
+      "nvml_used": 57749815296,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57753706496,
+      "pdh_shared": 483725312,
+      "ram_available": 46702993408,
+      "commit_available": 45584326656
+    },
+    {
+      "label": "loading",
+      "t": 1793878172.356536,
+      "nvml_used": 57749815296,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57753706496,
+      "pdh_shared": 483725312,
+      "ram_available": 46670725120,
+      "commit_available": 45594824704
+    },
+    {
+      "label": "loading",
+      "t": 1793878173.3712702,
+      "nvml_used": 57754009600,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57757925376,
+      "pdh_shared": 498503680,
+      "ram_available": 46619619328,
+      "commit_available": 45570437120
+    },
+    {
+      "label": "loading",
+      "t": 1793878174.3842485,
+      "nvml_used": 57754009600,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57757921280,
+      "pdh_shared": 494292992,
+      "ram_available": 46585905152,
+      "commit_available": 45558513664
+    },
+    {
+      "label": "loading",
+      "t": 1793878175.3845549,
+      "nvml_used": 57754009600,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57757925376,
+      "pdh_shared": 495259648,
+      "ram_available": 46548668416,
+      "commit_available": 45556469760
+    },
+    {
+      "label": "loading",
+      "t": 1793878176.3877091,
+      "nvml_used": 57754009600,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57757904896,
+      "pdh_shared": 484773888,
+      "ram_available": 46543257600,
+      "commit_available": 45556969472
+    },
+    {
+      "label": "loading",
+      "t": 1793878177.3939893,
+      "nvml_used": 57749815296,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57753710592,
+      "pdh_shared": 484773888,
+      "ram_available": 46508867584,
+      "commit_available": 45534834688
+    },
+    {
+      "label": "loading",
+      "t": 1793878178.393853,
+      "nvml_used": 57749815296,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57753710592,
+      "pdh_shared": 484773888,
+      "ram_available": 46534696960,
+      "commit_available": 45550374912
+    },
+    {
+      "label": "loading",
+      "t": 1793878179.4045076,
+      "nvml_used": 57749815296,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57753710592,
+      "pdh_shared": 484773888,
+      "ram_available": 46525394944,
+      "commit_available": 45539975168
+    },
+    {
+      "label": "loading",
+      "t": 1793878180.4061005,
+      "nvml_used": 57749815296,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57753710592,
+      "pdh_shared": 484773888,
+      "ram_available": 46526705664,
+      "commit_available": 45561790464
+    },
+    {
+      "label": "loading",
+      "t": 1793878181.4076586,
+      "nvml_used": 57749815296,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57753710592,
+      "pdh_shared": 484773888,
+      "ram_available": 46507560960,
+      "commit_available": 45554311168
+    },
+    {
+      "label": "loading",
+      "t": 1793878182.4220333,
+      "nvml_used": 57749815296,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57753710592,
+      "pdh_shared": 484773888,
+      "ram_available": 46529871872,
+      "commit_available": 45582684160
+    },
+    {
+      "label": "loading",
+      "t": 1793878183.4368663,
+      "nvml_used": 57749815296,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57753710592,
+      "pdh_shared": 484773888,
+      "ram_available": 46528438272,
+      "commit_available": 45608382464
+    },
+    {
+      "label": "loading",
+      "t": 1793878184.4499087,
+      "nvml_used": 57749815296,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57753710592,
+      "pdh_shared": 484773888,
+      "ram_available": 46537707520,
+      "commit_available": 45620129792
+    },
+    {
+      "label": "loading",
+      "t": 1793878185.4502335,
+      "nvml_used": 57749815296,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57753710592,
+      "pdh_shared": 484773888,
+      "ram_available": 46566731776,
+      "commit_available": 45653020672
+    },
+    {
+      "label": "loading",
+      "t": 1793878186.453167,
+      "nvml_used": 57749815296,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57753710592,
+      "pdh_shared": 484773888,
+      "ram_available": 46566055936,
+      "commit_available": 45636415488
+    },
+    {
+      "label": "loading",
+      "t": 1793878187.4670098,
+      "nvml_used": 57749815296,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57753710592,
+      "pdh_shared": 484773888,
+      "ram_available": 46612856832,
+      "commit_available": 45696102400
+    },
+    {
+      "label": "loading",
+      "t": 1793878188.473552,
+      "nvml_used": 57749815296,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57753710592,
+      "pdh_shared": 484773888,
+      "ram_available": 46607613952,
+      "commit_available": 45725093888
+    },
+    {
+      "label": "loading",
+      "t": 1793878189.488047,
+      "nvml_used": 57749815296,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57753710592,
+      "pdh_shared": 484773888,
+      "ram_available": 46319370240,
+      "commit_available": 45719977984
+    },
+    {
+      "label": "loading",
+      "t": 1793878190.5006027,
+      "nvml_used": 57749815296,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57753702400,
+      "pdh_shared": 480579584,
+      "ram_available": 46137393152,
+      "commit_available": 45716471808
+    },
+    {
+      "label": "loading",
+      "t": 1793878191.5134065,
+      "nvml_used": 57749815296,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57753702400,
+      "pdh_shared": 480579584,
+      "ram_available": 44225130496,
+      "commit_available": 45714477056
+    },
+    {
+      "label": "loading",
+      "t": 1793878192.527805,
+      "nvml_used": 57749815296,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57753702400,
+      "pdh_shared": 480579584,
+      "ram_available": 42262286336,
+      "commit_available": 45653147648
+    },
+    {
+      "label": "loading",
+      "t": 1793878193.5404692,
+      "nvml_used": 57749815296,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57753624576,
+      "pdh_shared": 473370624,
+      "ram_available": 40423600128,
+      "commit_available": 45700911104
+    },
+    {
+      "label": "loading",
+      "t": 1793878194.554487,
+      "nvml_used": 57749815296,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57753624576,
+      "pdh_shared": 473370624,
+      "ram_available": 38631186432,
+      "commit_available": 45712666624
+    },
+    {
+      "label": "loading",
+      "t": 1793878195.560924,
+      "nvml_used": 57749815296,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57753624576,
+      "pdh_shared": 473370624,
+      "ram_available": 37057454080,
+      "commit_available": 45684314112
+    },
+    {
+      "label": "loading",
+      "t": 1793878196.5750458,
+      "nvml_used": 57749815296,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57753624576,
+      "pdh_shared": 473370624,
+      "ram_available": 35605278720,
+      "commit_available": 45696958464
+    },
+    {
+      "label": "loading",
+      "t": 1793878197.5848384,
+      "nvml_used": 57749815296,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57753624576,
+      "pdh_shared": 473370624,
+      "ram_available": 34155053056,
+      "commit_available": 45723820032
+    },
+    {
+      "label": "loading",
+      "t": 1793878198.585771,
+      "nvml_used": 57749815296,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57753624576,
+      "pdh_shared": 473370624,
+      "ram_available": 32701579264,
+      "commit_available": 45711941632
+    },
+    {
+      "label": "loading",
+      "t": 1793878199.5991442,
+      "nvml_used": 57749815296,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57753624576,
+      "pdh_shared": 473370624,
+      "ram_available": 31237468160,
+      "commit_available": 45716758528
+    },
+    {
+      "label": "loading",
+      "t": 1793878200.6062791,
+      "nvml_used": 57767837696,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57771806720,
+      "pdh_shared": 543002624,
+      "ram_available": 29787435008,
+      "commit_available": 45632430080
+    },
+    {
+      "label": "loading",
+      "t": 1793878201.6073093,
+      "nvml_used": 57767837696,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57771806720,
+      "pdh_shared": 543256576,
+      "ram_available": 28433182720,
+      "commit_available": 45649215488
+    },
+    {
+      "label": "loading",
+      "t": 1793878202.62011,
+      "nvml_used": 57674944512,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57679065088,
+      "pdh_shared": 594223104,
+      "ram_available": 27078348800,
+      "commit_available": 45524520960
+    },
+    {
+      "label": "loading",
+      "t": 1793878203.631351,
+      "nvml_used": 57769762816,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57773858816,
+      "pdh_shared": 588701696,
+      "ram_available": 25638969344,
+      "commit_available": 45647798272
+    },
+    {
+      "label": "loading",
+      "t": 1793878204.6335075,
+      "nvml_used": 57769762816,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57773858816,
+      "pdh_shared": 588701696,
+      "ram_available": 23834710016,
+      "commit_available": 45591199744
+    },
+    {
+      "label": "loading",
+      "t": 1793878205.6466277,
+      "nvml_used": 57769762816,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57773858816,
+      "pdh_shared": 588701696,
+      "ram_available": 22095486976,
+      "commit_available": 45661868032
+    },
+    {
+      "label": "loading",
+      "t": 1793878206.6491542,
+      "nvml_used": 57769762816,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57773858816,
+      "pdh_shared": 588701696,
+      "ram_available": 20294172672,
+      "commit_available": 45639778304
+    },
+    {
+      "label": "loading",
+      "t": 1793878207.6625357,
+      "nvml_used": 57769762816,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 57773858816,
+      "pdh_shared": 588701696,
+      "ram_available": 18666074112,
+      "commit_available": 45650038784
+    },
+    {
+      "label": "loading",
+      "t": 1793878208.6757112,
+      "nvml_used": 62291222528,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 62295490560,
+      "pdh_shared": 655810560,
+      "ram_available": 17821777920,
+      "commit_available": 39978319872
+    },
+    {
+      "label": "loading",
+      "t": 1793878209.6841955,
+      "nvml_used": 63467724800,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 63472001024,
+      "pdh_shared": 655810560,
+      "ram_available": 18290933760,
+      "commit_available": 38581542912
+    },
+    {
+      "label": "loaded",
+      "t": 1793878212.615063,
+      "nvml_used": 63576776704,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 63581057024,
+      "pdh_shared": 657907712,
+      "ram_available": 17687437312,
+      "commit_available": 37840637952
+    },
+    {
+      "label": "after_unload",
+      "t": 1793878217.6626818,
+      "nvml_used": 3183648768,
+      "nvml_total": 67108864000,
+      "pdh_dedicated": 3186323456,
+      "pdh_shared": 190636032,
+      "ram_available": 48182861824,
+      "commit_available": 129818439680
+    }
+  ],
+  "ps_baseline": {
+    "models": []
+  },
+  "load": {
+    "status": 200,
+    "seconds": 46.3,
+    "error": null
+  },
+  "ps_loaded": {
+    "models": [
+      {
+        "name": "qwen3.8-flash-next-huihui:iq3s",
+        "model": "qwen3.8-flash-next-huihui:iq3s",
+        "size": 56131982457,
+        "digest": "3ed32d65bc3abafbdc88b50d35fa5cbf9780d4c2f46f9c71af12b0c764293d8f",
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "qwen4exp",
+          "families": [
+            "qwen4exp"
+          ],
+          "parameter_size": "176.9B",
+          "quantization_level": "IQ3_S"
+        },
+        "expires_at": "2026-11-05T20:00:10.6135233+08:00",
+        "size_vram": 56131982457,
+        "context_length": 131072,
+        "runner": "llamacpp"
+      }
+    ]
+  },
+  "unload_status": 200,
+  "ps_after": {
+    "models": []
+  }
+}

@@ -1,0 +1,121 @@
+manifest_version: 2
+name: coffee-vram
+version: "0.1.0"
+description: "Managing local models, as easy as a cup of coffee."
+author: JYUN MING CHEN
+license: MIT
+requires_hermes: ">=0.22.0"
+tags: [local-models, ollama, gpu, vram, desktop]
+provides_tools: [vram_status]
+provides_hooks: [post_api_request, api_request_error]
+provides_middleware: [llm_execution]
+config_schema:
+  mode:
+    type: str
+    choices: [simple, advanced]
+    default: simple
+    label: "View"
+    description: "Simple shows the gauge and loaded models; advanced adds history, estimates and the event log."
+  alert_source:
+    type: str
+    choices: [gpu, system_ram]
+    default: gpu
+    label: "Memory warnings track"
+    description: "Which pool colours the status chip and fires warn/hold toasts (display only)."
+  budget_pool:
+    type: str
+    choices: [gpu, system_ram, combined]
+    default: gpu
+    label: "Fit check uses"
+    description: "Capacity the call queue budgets against. gpu = NVML carve-out (default). system_ram = Windows-visible RAM. combined = GPU free + system RAM free (not sum of totals — that double-counts on unified memory like RTX Spark)."
+  warn_pct:
+    type: int
+    default: 85
+    label: "Warn at (%)"
+    description: "Toast when the warning-track pool crosses this share."
+  hold_pct:
+    type: int
+    default: 95
+    label: "Hold calls above (%)"
+    description: "Local calls that would push the fit-check pool past this share wait in the queue (also the hold mark on that pool's gauge)."
+  on_overflow:
+    type: str
+    choices: [queue, wait, warn_only]
+    default: queue
+    label: "When a model won't fit"
+    description: "queue: wait and unload idle models to make room. wait: wait without unloading. warn_only: notify and let the call run."
+  keep_warm:
+    type: bool
+    default: true
+    label: "Keep models warm when there is room"
+  ollama_url:
+    type: str
+    default: "http://127.0.0.1:11434"
+    label: "Ollama URL"
+  reserve_gb:
+    type: float
+    default: 2.0
+    label: "Reserve for the desktop (GB)"
+  max_concurrent_local:
+    type: int
+    default: 1
+    label: "Concurrent local calls"
+  queue_timeout_s:
+    type: int
+    default: 600
+    label: "Queue timeout (s)"
+    description: "After this long a held call runs anyway and you get a notification."
+  evict_idle_s:
+    type: int
+    default: 20
+    label: "Idle before unload (s)"
+  pinned_models:
+    type: list
+    default: []
+    label: "Pinned models"
+    description: "Model names Coffee never unloads."
+  kv_cache_type:
+    type: str
+    choices: [f16, q8_0, q4_0]
+    default: f16
+    label: "KV cache type"
+    description: "Match OLLAMA_KV_CACHE_TYPE."
+  estimate_overhead_pct:
+    type: int
+    default: 10
+    label: "Estimate safety margin (%)"
+  sample_interval_ms:
+    type: int
+    default: 1000
+    label: "Sample interval (ms)"
+  watch_external:
+    type: bool
+    default: true
+    label: "Count other GPU processes"
+  gpu_total_override_gb:
+    type: float
+    default: 0.0
+    label: "GPU memory override (GB)"
+    description: "0 = detect. Set this on unified-memory machines whose driver misreports the pool."
+  show_system_ram:
+    type: bool
+    default: true
+    label: "Show system memory"
+    description: "Windows-visible RAM (separate from the GPU carve-out Coffee budgets against)."
+  show_cpu:
+    type: bool
+    default: true
+    label: "Show CPU"
+  show_network:
+    type: bool
+    default: true
+    label: "Show network"
+  show_gpu_temp:
+    type: bool
+    default: true
+    label: "Show GPU temperature"
+  show_model_stats:
+    type: bool
+    default: true
+    label: "Show context and token speed"
+    description: "Per loaded model: configured context, last prompt size, and output tokens/sec."

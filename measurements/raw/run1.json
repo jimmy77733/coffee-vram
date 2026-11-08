@@ -1,0 +1,868 @@
+{
+  "host": {
+    "platform": "win32",
+    "machine": "ARM64"
+  },
+  "ollama_version": {
+    "version": "0.40.14"
+  },
+  "ollama_env": {
+    "OLLAMA_KV_CACHE_TYPE": null,
+    "OLLAMA_NUM_PARALLEL": null,
+    "OLLAMA_CONTEXT_LENGTH": "131072",
+    "OLLAMA_FLASH_ATTENTION": null
+  },
+  "model": "qwen3.5:9b",
+  "model_file_size": 6550825550,
+  "model_info": {
+    "general.architecture": "qwen35",
+    "general.base_model.0.name": "Qwen3.5 9B Base",
+    "general.base_model.0.organization": "Qwen",
+    "general.base_model.0.repo_url": "https://huggingface.co/Qwen/Qwen3.5-9B-Base",
+    "general.base_model.count": 1,
+    "general.file_type": 15,
+    "general.license": "apache-2.0",
+    "general.license.link": "https://huggingface.co/Qwen/Qwen3.5-9B/blob/main/LICENSE",
+    "general.parameter_count": 8953803264,
+    "general.quantization_version": 2,
+    "general.size_label": "9.0B",
+    "general.type": "model",
+    "qwen35.attention.head_count": 16,
+    "qwen35.attention.head_count_kv": 4,
+    "qwen35.attention.key_length": 256,
+    "qwen35.attention.layer_norm_rms_epsilon": 1e-06,
+    "qwen35.attention.value_length": 256,
+    "qwen35.block_count": 32,
+    "qwen35.context_length": 262144,
+    "qwen35.embedding_length": 4096,
+    "qwen35.feed_forward_length": 12288,
+    "qwen35.full_attention_interval": 4,
+    "qwen35.rope.dimension_count": 64,
+    "qwen35.rope.freq_base": 10000000,
+    "qwen35.ssm.conv_kernel": 4,
+    "qwen35.ssm.group_count": 16,
+    "qwen35.ssm.inner_size": 4096,
+    "qwen35.ssm.state_size": 128,
+    "qwen35.ssm.time_step_rank": 32,
+    "tokenizer.ggml.add_bos_token": false,
+    "tokenizer.ggml.eos_token_id": 248046,
+    "tokenizer.ggml.model": "gpt2",
+    "tokenizer.ggml.padding_token_id": 248044,
+    "tokenizer.ggml.pre": "qwen35"
+  },
+  "snapshots": [
+    {
+      "label": "baseline",
+      "at": 1793876859.3376687,
+      "os": {
+        "ram_total": 68717236224,
+        "ram_available": 47750119424,
+        "commit_total": 158911549440,
+        "commit_available": 129223766016
+      },
+      "nvml": {
+        "driver": "617.42",
+        "count_rc": 0,
+        "devices": [
+          {
+            "index": 0,
+            "name": "NVIDIA RTX Spark N1X (6144-core Blackwell RTX GPU)",
+            "memory_v1_rc": 0,
+            "memory_v1": {
+              "total": 67108864000,
+              "free": 63690125312,
+              "used": 3418738688
+            },
+            "memory_v2_rc": 0,
+            "memory_v2": {
+              "total": 67108864000,
+              "reserved": 14680064,
+              "free": 63690125312,
+              "used": 3404058624
+            },
+            "utilization_rc": 0,
+            "utilization": {
+              "gpu": 5,
+              "memory": 0
+            },
+            "processes_rc": 0,
+            "processes": [
+              {
+                "pid": 33240,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 26132,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 13808,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 10524,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 25972,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 25308,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 20244,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 23040,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 25044,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 21384,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 24480,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 4256,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 35856,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 27256,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 31316,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 16660,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 21252,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 14108,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 1080,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 33180,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 29624,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 34432,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 36492,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 14188,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 11560,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 10680,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 13876,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 13040,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 8940,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 26044,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 31196,
+                "used": 18446744073709551615
+              }
+            ]
+          },
+          {
+            "index": 1,
+            "name": "NVIDIA NPU",
+            "memory_v1_rc": 3,
+            "memory_v2_rc": 3,
+            "utilization_rc": 0,
+            "utilization": {
+              "gpu": 0,
+              "memory": 0
+            },
+            "processes_rc": 3
+          }
+        ]
+      },
+      "cuda": {
+        "init_rc": 0,
+        "name": "NVIDIA RTX Spark N1X (6144-core Blackwell RTX GPU)",
+        "total_mem_rc": 0,
+        "total_mem": 117826244608,
+        "integrated_rc": 0,
+        "integrated": true,
+        "mem_get_info_rc": 0,
+        "mem_get_info": {
+          "free": 117616529408,
+          "total": 117826244608
+        }
+      },
+      "smi": {
+        "gpu": {
+          "rc": 0,
+          "stdout": "0, NVIDIA RTX Spark N1X (6144-core Blackwell RTX GPU), 64000, 3247, 60740, 5, 617.42\n1, NVIDIA NPU, [N/A], [N/A], [N/A], 0, 617.42",
+          "stderr": ""
+        },
+        "apps": {
+          "rc": 0,
+          "stdout": "13808, C:\\Windows\\System32\\ShellHost.exe, [N/A]\n10524, C:\\Windows\\SystemApps\\MicrosoftWindows.Client.CBS_cw5n1h2txyewy\\CrossDeviceResume.exe, [N/A]\n25972, C:\\Windows\\explorer.exe, [N/A]\n25308, C:\\Program Files\\NVIDIA Corporation\\NVIDIA App\\CEF\\NVIDIA Overlay.exe, [N/A]\n20244, C:\\Program Files\\NVIDIA Corporation\\NVIDIA App\\CEF\\NVIDIA Overlay.exe, [N/A]\n23040, C:\\Windows\\SystemApps\\Microsoft.Windows.StartMenuExperienceHost_cw5n1h2txyewy\\StartMenuExperienceHost.exe, [N/A]\n25044, C:\\Windows\\SystemApps\\MicrosoftWindows.Client.CBS_cw5n1h2txyewy\\SearchHost.exe, [N/A]\n21384, C:\\Windows\\SystemApps\\Microsoft.LockApp_cw5n1h2txyewy\\LockApp.exe, [N/A]\n24480, C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\156.0.4314.58\\msedgewebview2.exe, [N/A]\n4256, C:\\Program Files\\WindowsApps\\9426MICRO-STARINTERNATION.MSICenterS_1.1.60818.0_arm64__kzh8wxbdkxb8p\\MSI Center S\\MSI Center S.exe, [N/A]\n35856, C:\\Windows\\SystemApps\\MicrosoftWindows.Client.CBS_cw5n1h2txyewy\\TextInputHost.exe, [N/A]\n16660, C:\\Windows\\SystemApps\\ShellExperienceHost_cw5n1h2txyewy\\ShellExperienceHost.exe, [N/A]\n21252, C:\\Users\\jimmy\\AppData\\Local\\LINE\\bin\\current\\LINE.exe, [N/A]\n14108, C:\\Users\\jimmy\\AppData\\Local\\Programs\\Grok Bot\\Grok Bot.exe, [N/A]\n1080, C:\\Users\\jimmy\\AppData\\Local\\Programs\\Grok Bot\\Grok Bot.exe, [N/A]\n33180, C:\\Users\\jimmy\\AppData\\Local\\hermes\\hermes-agent\\apps\\desktop\\release\\win-arm64-unpacked\\Hermes.exe, [N/A]\n29624, C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe, [N/A]\n34432, C:\\Windows\\System32\\ApplicationFrameHost.exe, [N/A]\n36492, C:\\Windows\\ImmersiveControlPanel\\SystemSettings.exe, [N/A]\n14188, C:\\Program Files\\WindowsApps\\Microsoft.YourPhone_1.26092.119.0_arm64__8wekyb3d8bbwe\\PhoneExperienceHost.exe, [N/A]\n11560, C:\\Program Files (x86)\\Microsoft\\Copilot\\Application\\copilotapp.exe, [N/A]\n10680, C:\\Program Files (x86)\\Microsoft\\Copilot\\Application\\undocked_copilot\\copilotapphost.exe, [N/A]\n13876, C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe, [N/A]\n13040, C:\\Users\\jimmy\\AppData\\Local\\Programs\\cursor\\Cursor.exe, [N/A]\n8940, C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe, [N/A]\n26044, C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe, [N/A]\n31196, C:\\Program Files (x86)\\Steam\\steamapps\\common\\wallpaper_engine\\wallpaper64.exe, [N/A]\n[N/A], [N/A], [N/A]",
+          "stderr": ""
+        }
+      },
+      "ollama_ps": {
+        "models": []
+      }
+    },
+    {
+      "label": "model_loaded",
+      "at": 1793876867.5556388,
+      "os": {
+        "ram_total": 68717236224,
+        "ram_available": 45921181696,
+        "commit_total": 158911549440,
+        "commit_available": 113688055808
+      },
+      "nvml": {
+        "driver": "617.42",
+        "count_rc": 0,
+        "devices": [
+          {
+            "index": 0,
+            "name": "NVIDIA RTX Spark N1X (6144-core Blackwell RTX GPU)",
+            "memory_v1_rc": 0,
+            "memory_v1": {
+              "total": 67108864000,
+              "free": 52000665600,
+              "used": 15108198400
+            },
+            "memory_v2_rc": 0,
+            "memory_v2": {
+              "total": 67108864000,
+              "reserved": 14680064,
+              "free": 52000665600,
+              "used": 15093518336
+            },
+            "utilization_rc": 0,
+            "utilization": {
+              "gpu": 20,
+              "memory": 0
+            },
+            "processes_rc": 0,
+            "processes": [
+              {
+                "pid": 33240,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 26132,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 13808,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 10524,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 25972,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 25308,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 20244,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 23040,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 25044,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 21384,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 24480,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 4256,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 35856,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 27256,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 31316,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 16660,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 21252,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 14108,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 1080,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 33180,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 29624,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 34432,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 36492,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 14188,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 11560,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 10680,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 13876,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 13040,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 8940,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 26044,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 31196,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 19888,
+                "used": 18446744073709551615
+              }
+            ]
+          },
+          {
+            "index": 1,
+            "name": "NVIDIA NPU",
+            "memory_v1_rc": 3,
+            "memory_v2_rc": 3,
+            "utilization_rc": 0,
+            "utilization": {
+              "gpu": 0,
+              "memory": 0
+            },
+            "processes_rc": 3
+          }
+        ]
+      },
+      "cuda": {
+        "init_rc": 0,
+        "name": "NVIDIA RTX Spark N1X (6144-core Blackwell RTX GPU)",
+        "total_mem_rc": 0,
+        "total_mem": 117826244608,
+        "integrated_rc": 0,
+        "integrated": true,
+        "mem_get_info_rc": 0,
+        "mem_get_info": {
+          "free": 117616529408,
+          "total": 117826244608
+        }
+      },
+      "smi": {
+        "gpu": {
+          "rc": 0,
+          "stdout": "0, NVIDIA RTX Spark N1X (6144-core Blackwell RTX GPU), 64000, 14395, 49592, 25, 617.42\n1, NVIDIA NPU, [N/A], [N/A], [N/A], 0, 617.42",
+          "stderr": ""
+        },
+        "apps": {
+          "rc": 0,
+          "stdout": "13808, C:\\Windows\\System32\\ShellHost.exe, [N/A]\n10524, C:\\Windows\\SystemApps\\MicrosoftWindows.Client.CBS_cw5n1h2txyewy\\CrossDeviceResume.exe, [N/A]\n25972, C:\\Windows\\explorer.exe, [N/A]\n25308, C:\\Program Files\\NVIDIA Corporation\\NVIDIA App\\CEF\\NVIDIA Overlay.exe, [N/A]\n20244, C:\\Program Files\\NVIDIA Corporation\\NVIDIA App\\CEF\\NVIDIA Overlay.exe, [N/A]\n23040, C:\\Windows\\SystemApps\\Microsoft.Windows.StartMenuExperienceHost_cw5n1h2txyewy\\StartMenuExperienceHost.exe, [N/A]\n25044, C:\\Windows\\SystemApps\\MicrosoftWindows.Client.CBS_cw5n1h2txyewy\\SearchHost.exe, [N/A]\n21384, C:\\Windows\\SystemApps\\Microsoft.LockApp_cw5n1h2txyewy\\LockApp.exe, [N/A]\n24480, C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\156.0.4314.58\\msedgewebview2.exe, [N/A]\n4256, C:\\Program Files\\WindowsApps\\9426MICRO-STARINTERNATION.MSICenterS_1.1.60818.0_arm64__kzh8wxbdkxb8p\\MSI Center S\\MSI Center S.exe, [N/A]\n35856, C:\\Windows\\SystemApps\\MicrosoftWindows.Client.CBS_cw5n1h2txyewy\\TextInputHost.exe, [N/A]\n16660, C:\\Windows\\SystemApps\\ShellExperienceHost_cw5n1h2txyewy\\ShellExperienceHost.exe, [N/A]\n21252, C:\\Users\\jimmy\\AppData\\Local\\LINE\\bin\\current\\LINE.exe, [N/A]\n14108, C:\\Users\\jimmy\\AppData\\Local\\Programs\\Grok Bot\\Grok Bot.exe, [N/A]\n1080, C:\\Users\\jimmy\\AppData\\Local\\Programs\\Grok Bot\\Grok Bot.exe, [N/A]\n33180, C:\\Users\\jimmy\\AppData\\Local\\hermes\\hermes-agent\\apps\\desktop\\release\\win-arm64-unpacked\\Hermes.exe, [N/A]\n29624, C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe, [N/A]\n34432, C:\\Windows\\System32\\ApplicationFrameHost.exe, [N/A]\n36492, C:\\Windows\\ImmersiveControlPanel\\SystemSettings.exe, [N/A]\n14188, C:\\Program Files\\WindowsApps\\Microsoft.YourPhone_1.26092.119.0_arm64__8wekyb3d8bbwe\\PhoneExperienceHost.exe, [N/A]\n11560, C:\\Program Files (x86)\\Microsoft\\Copilot\\Application\\copilotapp.exe, [N/A]\n10680, C:\\Program Files (x86)\\Microsoft\\Copilot\\Application\\undocked_copilot\\copilotapphost.exe, [N/A]\n13876, C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe, [N/A]\n13040, C:\\Users\\jimmy\\AppData\\Local\\Programs\\cursor\\Cursor.exe, [N/A]\n8940, C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe, [N/A]\n26044, C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe, [N/A]\n31196, C:\\Program Files (x86)\\Steam\\steamapps\\common\\wallpaper_engine\\wallpaper64.exe, [N/A]\n19888, C:\\Users\\jimmy\\AppData\\Local\\Programs\\Ollama\\lib\\ollama\\llama-server.exe, [N/A]\n[N/A], [N/A], [N/A]",
+          "stderr": ""
+        }
+      },
+      "ollama_ps": {
+        "models": [
+          {
+            "name": "qwen3.5:9b",
+            "model": "qwen3.5:9b",
+            "size": 10626982215,
+            "digest": "56671c2ab9385f9cfcb404638e32cd62d88e3501d44822208363c010179a3c90",
+            "details": {
+              "parent_model": "",
+              "format": "gguf",
+              "family": "qwen35",
+              "families": [
+                "qwen35"
+              ],
+              "parameter_size": "9.0B",
+              "quantization_level": "Q4_K_M"
+            },
+            "expires_at": "2026-11-05T19:10:47.5531681+08:00",
+            "size_vram": 10626982215,
+            "context_length": 131072,
+            "runner": "llamacpp"
+          }
+        ]
+      }
+    },
+    {
+      "label": "after_unload",
+      "at": 1793876870.8923826,
+      "os": {
+        "ram_total": 68717236224,
+        "ram_available": 47849041920,
+        "commit_total": 158911549440,
+        "commit_available": 129369780224
+      },
+      "nvml": {
+        "driver": "617.42",
+        "count_rc": 0,
+        "devices": [
+          {
+            "index": 0,
+            "name": "NVIDIA RTX Spark N1X (6144-core Blackwell RTX GPU)",
+            "memory_v1_rc": 0,
+            "memory_v1": {
+              "total": 67108864000,
+              "free": 63725842432,
+              "used": 3383021568
+            },
+            "memory_v2_rc": 0,
+            "memory_v2": {
+              "total": 67108864000,
+              "reserved": 14680064,
+              "free": 63725842432,
+              "used": 3368341504
+            },
+            "utilization_rc": 0,
+            "utilization": {
+              "gpu": 3,
+              "memory": 0
+            },
+            "processes_rc": 0,
+            "processes": [
+              {
+                "pid": 33240,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 26132,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 13808,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 10524,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 25972,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 25308,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 20244,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 23040,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 25044,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 21384,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 24480,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 4256,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 35856,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 27256,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 31316,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 16660,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 21252,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 14108,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 1080,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 33180,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 29624,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 34432,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 36492,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 14188,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 11560,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 10680,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 13876,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 13040,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 8940,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 26044,
+                "used": 18446744073709551615
+              },
+              {
+                "pid": 31196,
+                "used": 18446744073709551615
+              }
+            ]
+          },
+          {
+            "index": 1,
+            "name": "NVIDIA NPU",
+            "memory_v1_rc": 3,
+            "memory_v2_rc": 3,
+            "utilization_rc": 0,
+            "utilization": {
+              "gpu": 0,
+              "memory": 0
+            },
+            "processes_rc": 3
+          }
+        ]
+      },
+      "cuda": {
+        "init_rc": 0,
+        "name": "NVIDIA RTX Spark N1X (6144-core Blackwell RTX GPU)",
+        "total_mem_rc": 0,
+        "total_mem": 117826244608,
+        "integrated_rc": 0,
+        "integrated": true,
+        "mem_get_info_rc": 0,
+        "mem_get_info": {
+          "free": 117616529408,
+          "total": 117826244608
+        }
+      },
+      "smi": {
+        "gpu": {
+          "rc": 0,
+          "stdout": "0, NVIDIA RTX Spark N1X (6144-core Blackwell RTX GPU), 64000, 3213, 60774, 3, 617.42\n1, NVIDIA NPU, [N/A], [N/A], [N/A], 0, 617.42",
+          "stderr": ""
+        },
+        "apps": {
+          "rc": 0,
+          "stdout": "13808, C:\\Windows\\System32\\ShellHost.exe, [N/A]\n10524, C:\\Windows\\SystemApps\\MicrosoftWindows.Client.CBS_cw5n1h2txyewy\\CrossDeviceResume.exe, [N/A]\n25972, C:\\Windows\\explorer.exe, [N/A]\n25308, C:\\Program Files\\NVIDIA Corporation\\NVIDIA App\\CEF\\NVIDIA Overlay.exe, [N/A]\n20244, C:\\Program Files\\NVIDIA Corporation\\NVIDIA App\\CEF\\NVIDIA Overlay.exe, [N/A]\n23040, C:\\Windows\\SystemApps\\Microsoft.Windows.StartMenuExperienceHost_cw5n1h2txyewy\\StartMenuExperienceHost.exe, [N/A]\n25044, C:\\Windows\\SystemApps\\MicrosoftWindows.Client.CBS_cw5n1h2txyewy\\SearchHost.exe, [N/A]\n21384, C:\\Windows\\SystemApps\\Microsoft.LockApp_cw5n1h2txyewy\\LockApp.exe, [N/A]\n24480, C:\\Program Files (x86)\\Microsoft\\EdgeWebView\\Application\\156.0.4314.58\\msedgewebview2.exe, [N/A]\n4256, C:\\Program Files\\WindowsApps\\9426MICRO-STARINTERNATION.MSICenterS_1.1.60818.0_arm64__kzh8wxbdkxb8p\\MSI Center S\\MSI Center S.exe, [N/A]\n35856, C:\\Windows\\SystemApps\\MicrosoftWindows.Client.CBS_cw5n1h2txyewy\\TextInputHost.exe, [N/A]\n16660, C:\\Windows\\SystemApps\\ShellExperienceHost_cw5n1h2txyewy\\ShellExperienceHost.exe, [N/A]\n21252, C:\\Users\\jimmy\\AppData\\Local\\LINE\\bin\\current\\LINE.exe, [N/A]\n14108, C:\\Users\\jimmy\\AppData\\Local\\Programs\\Grok Bot\\Grok Bot.exe, [N/A]\n1080, C:\\Users\\jimmy\\AppData\\Local\\Programs\\Grok Bot\\Grok Bot.exe, [N/A]\n33180, C:\\Users\\jimmy\\AppData\\Local\\hermes\\hermes-agent\\apps\\desktop\\release\\win-arm64-unpacked\\Hermes.exe, [N/A]\n29624, C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe, [N/A]\n34432, C:\\Windows\\System32\\ApplicationFrameHost.exe, [N/A]\n36492, C:\\Windows\\ImmersiveControlPanel\\SystemSettings.exe, [N/A]\n14188, C:\\Program Files\\WindowsApps\\Microsoft.YourPhone_1.26092.119.0_arm64__8wekyb3d8bbwe\\PhoneExperienceHost.exe, [N/A]\n11560, C:\\Program Files (x86)\\Microsoft\\Copilot\\Application\\copilotapp.exe, [N/A]\n10680, C:\\Program Files (x86)\\Microsoft\\Copilot\\Application\\undocked_copilot\\copilotapphost.exe, [N/A]\n13876, C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe, [N/A]\n13040, C:\\Users\\jimmy\\AppData\\Local\\Programs\\cursor\\Cursor.exe, [N/A]\n8940, C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe, [N/A]\n26044, C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe, [N/A]\n31196, C:\\Program Files (x86)\\Steam\\steamapps\\common\\wallpaper_engine\\wallpaper64.exe, [N/A]\n[N/A], [N/A], [N/A]",
+          "stderr": ""
+        }
+      },
+      "ollama_ps": {
+        "models": []
+      }
+    }
+  ],
+  "keep_alive": [
+    {
+      "trial": "v1_top_level_string",
+      "url": "/v1/chat/completions",
+      "keep_alive_sent": "2m",
+      "expected_s": 120,
+      "status": 200,
+      "elapsed_s": 7.51,
+      "expires_in_s": 120.0,
+      "ollama_ps": {
+        "models": [
+          {
+            "name": "qwen3.5:9b",
+            "model": "qwen3.5:9b",
+            "size": 10626982215,
+            "digest": "56671c2ab9385f9cfcb404638e32cd62d88e3501d44822208363c010179a3c90",
+            "details": {
+              "parent_model": "",
+              "format": "gguf",
+              "family": "qwen35",
+              "families": [
+                "qwen35"
+              ],
+              "parameter_size": "9.0B",
+              "quantization_level": "Q4_K_M"
+            },
+            "expires_at": "2026-11-05T19:09:47.1980229+08:00",
+            "size_vram": 10626982215,
+            "context_length": 131072,
+            "runner": "llamacpp"
+          }
+        ]
+      },
+      "error": null
+    },
+    {
+      "trial": "v1_top_level_seconds",
+      "url": "/v1/chat/completions",
+      "keep_alive_sent": 420,
+      "expected_s": 420,
+      "status": 200,
+      "elapsed_s": 0.11,
+      "expires_in_s": 420.0,
+      "ollama_ps": {
+        "models": [
+          {
+            "name": "qwen3.5:9b",
+            "model": "qwen3.5:9b",
+            "size": 10626982215,
+            "digest": "56671c2ab9385f9cfcb404638e32cd62d88e3501d44822208363c010179a3c90",
+            "details": {
+              "parent_model": "",
+              "format": "gguf",
+              "family": "qwen35",
+              "families": [
+                "qwen35"
+              ],
+              "parameter_size": "9.0B",
+              "quantization_level": "Q4_K_M"
+            },
+            "expires_at": "2026-11-05T19:14:47.3116619+08:00",
+            "size_vram": 10626982215,
+            "context_length": 131072,
+            "runner": "llamacpp"
+          }
+        ]
+      },
+      "error": null
+    },
+    {
+      "trial": "v1_no_keep_alive",
+      "url": "/v1/chat/completions",
+      "keep_alive_sent": null,
+      "expected_s": null,
+      "status": 200,
+      "elapsed_s": 0.1,
+      "expires_in_s": 420.0,
+      "ollama_ps": {
+        "models": [
+          {
+            "name": "qwen3.5:9b",
+            "model": "qwen3.5:9b",
+            "size": 10626982215,
+            "digest": "56671c2ab9385f9cfcb404638e32cd62d88e3501d44822208363c010179a3c90",
+            "details": {
+              "parent_model": "",
+              "format": "gguf",
+              "family": "qwen35",
+              "families": [
+                "qwen35"
+              ],
+              "parameter_size": "9.0B",
+              "quantization_level": "Q4_K_M"
+            },
+            "expires_at": "2026-11-05T19:14:47.4263588+08:00",
+            "size_vram": 10626982215,
+            "context_length": 131072,
+            "runner": "llamacpp"
+          }
+        ]
+      },
+      "error": null
+    },
+    {
+      "trial": "v1_options_num_ctx",
+      "url": "/v1/chat/completions",
+      "keep_alive_sent": null,
+      "expected_s": null,
+      "status": 200,
+      "elapsed_s": 0.08,
+      "expires_in_s": 420.0,
+      "ollama_ps": {
+        "models": [
+          {
+            "name": "qwen3.5:9b",
+            "model": "qwen3.5:9b",
+            "size": 10626982215,
+            "digest": "56671c2ab9385f9cfcb404638e32cd62d88e3501d44822208363c010179a3c90",
+            "details": {
+              "parent_model": "",
+              "format": "gguf",
+              "family": "qwen35",
+              "families": [
+                "qwen35"
+              ],
+              "parameter_size": "9.0B",
+              "quantization_level": "Q4_K_M"
+            },
+            "expires_at": "2026-11-05T19:14:47.5096021+08:00",
+            "size_vram": 10626982215,
+            "context_length": 131072,
+            "runner": "llamacpp"
+          }
+        ]
+      },
+      "error": null
+    },
+    {
+      "trial": "native_generate",
+      "url": "/api/generate",
+      "keep_alive_sent": "3m",
+      "expected_s": 180,
+      "status": 200,
+      "elapsed_s": 0.04,
+      "expires_in_s": 180.0,
+      "ollama_ps": {
+        "models": [
+          {
+            "name": "qwen3.5:9b",
+            "model": "qwen3.5:9b",
+            "size": 10626982215,
+            "digest": "56671c2ab9385f9cfcb404638e32cd62d88e3501d44822208363c010179a3c90",
+            "details": {
+              "parent_model": "",
+              "format": "gguf",
+              "family": "qwen35",
+              "families": [
+                "qwen35"
+              ],
+              "parameter_size": "9.0B",
+              "quantization_level": "Q4_K_M"
+            },
+            "expires_at": "2026-11-05T19:10:47.5531681+08:00",
+            "size_vram": 10626982215,
+            "context_length": 131072,
+            "runner": "llamacpp"
+          }
+        ]
+      },
+      "error": null
+    }
+  ],
+  "unload": 200
+}

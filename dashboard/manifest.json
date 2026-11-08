@@ -1,0 +1,8 @@
+{
+  "name": "coffee-vram",
+  "label": "Coffee",
+  "description": "Managing local models, as easy as a cup of coffee.",
+  "tab": { "hidden": true },
+  "entry": "dist/index.js",
+  "api": "plugin_api.py"
+}
