@@ -13,8 +13,6 @@ MODES = ("simple", "advanced")
 KV_CACHE_TYPES = ("f16", "q8_0", "q4_0")
 ALERT_SOURCES = ("gpu", "system_ram")
 BUDGET_POOLS = ("gpu", "system_ram", "combined")
-
-
 @dataclass(frozen=True)
 class Settings:
     mode: str = "simple"

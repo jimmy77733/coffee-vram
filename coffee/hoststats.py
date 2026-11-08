@@ -14,6 +14,7 @@ logger = logging.getLogger(__name__)
 
 _PDH_FMT_DOUBLE = 0x00000200
 _PDH_MORE_DATA = 0x800007D2
+_GIB = 1 << 30
 
 
 @dataclass(frozen=True)
@@ -24,10 +25,56 @@ class HostStats:
     net_bps: float | None = None
     gpu_temp_c: int | None = None
     gpu_util_pct: float | None = None  # NVML utilization.gpu (compute), not memory
+    gpu_name: str | None = None
+    cpu_name: str | None = None
+    ram_name: str | None = None
 
     @property
     def ram_pct(self) -> float:
         return self.ram_used / self.ram_total * 100 if self.ram_total else 0.0
+
+
+def read_cpu_name() -> str | None:
+    """Processor brand string; Windows registry or /proc/cpuinfo model name."""
+    if sys.platform == "win32":
+        try:
+            import winreg
+            with winreg.OpenKey(
+                    winreg.HKEY_LOCAL_MACHINE,
+                    r"HARDWARE\DESCRIPTION\System\CentralProcessor\0") as key:
+                value, _ = winreg.QueryValueEx(key, "ProcessorNameString")
+            name = str(value).strip()
+            return name or None
+        except OSError:
+            return None
+    try:
+        for line in open("/proc/cpuinfo", encoding="utf-8"):
+            if line.startswith("model name") or line.startswith("Hardware"):
+                return line.split(":", 1)[1].strip() or None
+    except OSError:
+        return None
+    return None
+
+
+def read_ram_name(total: int) -> str | None:
+    """Capacity label for the system-RAM row (DIMM part numbers are rarely useful here)."""
+    if total <= 0:
+        return None
+    return f"{total / _GIB:.0f} GB"
+
+
+def read_gpu_name(gpu) -> str | None:
+    """NVML / nvidia-smi device name from the active GPU backend."""
+    reading = None
+    try:
+        reading = gpu.read() if gpu is not None else None
+    except Exception:
+        logger.debug("coffee-vram: GPU name read failed", exc_info=True)
+    name = getattr(reading, "name", None) if reading is not None else None
+    if isinstance(name, str) and name.strip():
+        return name.strip()
+    device = getattr(gpu, "_device", None)
+    return device.strip() if isinstance(device, str) and device.strip() else None
 
 
 class _NvmlUtilization(ctypes.Structure):
@@ -225,15 +272,28 @@ class HostSampler:
         self._net = NetMeter()
         self._at = 0.0
         self._cache = HostStats()
+        self._names: dict[str, str | None] | None = None
+
+    def _device_names(self, gpu, ram_total: int) -> dict[str, str | None]:
+        if self._names is not None:
+            return self._names
+        self._names = {
+            "gpu_name": read_gpu_name(gpu),
+            "cpu_name": read_cpu_name(),
+            "ram_name": read_ram_name(ram_total),
+        }
+        return self._names
 
     def read(self, gpu, *, fresh: bool = False) -> HostStats:
         now = time.monotonic()
         if not fresh and now - self._at < 0.8:
             return self._cache
         total, used = read_ram()
+        names = self._device_names(gpu, total)
         self._cache = HostStats(
             ram_total=total, ram_used=used, cpu_pct=self._cpu.read(),
             net_bps=self._net.read(), gpu_temp_c=read_gpu_temp(gpu),
-            gpu_util_pct=read_gpu_util(gpu))
+            gpu_util_pct=read_gpu_util(gpu),
+            gpu_name=names["gpu_name"], cpu_name=names["cpu_name"], ram_name=names["ram_name"])
         self._at = now
         return self._cache

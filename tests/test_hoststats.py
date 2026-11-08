@@ -21,7 +21,9 @@ def test_status_includes_host_stats_and_respects_toggles():
     assert body["alert_source"] == "gpu"
     assert body["host"]["ram_total"] > 0
     assert set(body["host"]) >= {
-        "ram_total", "ram_used", "ram_pct", "cpu_pct", "net_bps", "gpu_temp_c", "gpu_util_pct"}
+        "ram_total", "ram_used", "ram_pct", "cpu_pct", "net_bps", "gpu_temp_c", "gpu_util_pct",
+        "gpu_name", "cpu_name", "ram_name"}
+    assert body["host"]["gpu_name"] == "Fake GPU"
 
     monitor, _ = make_monitor(Pool(), {"show_system_ram": False, "show_cpu": False,
                                        "show_network": False, "show_gpu_temp": False})
@@ -38,6 +40,9 @@ def test_alert_source_system_ram_drives_level_without_changing_gpu_budget(monkey
         net_bps = 0.0
         gpu_temp_c = 40
         gpu_util_pct = 12.0
+        gpu_name = "Fake GPU"
+        cpu_name = "Fake CPU"
+        ram_name = "64 GB"
 
     pool = Pool()
     monitor, _ = make_monitor(pool, {"alert_source": "system_ram", "warn_pct": 85, "hold_pct": 95})

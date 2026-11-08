@@ -1,7 +1,7 @@
 # RESEARCH — Spark 實測
 
 量測日期 2026-11-05。腳本 `scripts/measure_spark.py`（只用標準庫；NVML、CUDA driver 都走 ctypes），
-原始 JSON 存 `measurements/raw/`（不進 git）。除了載入／卸載測試模型 `qwen3.5:9b`，全程唯讀。
+原始 JSON 存 `measurements/raw/`（已去除本機路徑與行程清單等個資，僅保留硬體／VRAM 數值）。除了載入／卸載測試模型 `qwen3.5:9b`，全程唯讀。
 
 ## 環境
 

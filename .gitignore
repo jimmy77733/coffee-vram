@@ -2,3 +2,23 @@
 __pycache__/
 *.pyc
 .pytest_cache/
+.DS_Store
+*.bak
+*.tmp
+
+# Local / personal character art — not part of the plugin release
+assets/四季/
+assets/*_side*.jpg
+assets/*_side*.png
+assets/nyx*.jpg
+assets/nyx*.png
+assets/Spring*.jpg
+assets/Mia*.jpg
+assets/Leo*.jpg
+assets/Argus*.jpg
+assets/Talia*.jpg
+desktop/assets/nyx*.jpg
+desktop/assets/nyx*.png
+
+# Editor / agent scratch
+scripts/_*.py

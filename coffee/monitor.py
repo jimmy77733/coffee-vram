@@ -372,6 +372,7 @@ class Monitor:
                 "net_bps": None if host.net_bps is None else round(host.net_bps),
                 "gpu_temp_c": host.gpu_temp_c,
                 "gpu_util_pct": None if host.gpu_util_pct is None else round(host.gpu_util_pct, 1),
+                "gpu_name": host.gpu_name, "cpu_name": host.cpu_name, "ram_name": host.ram_name,
             },
             "loaded": loaded,
             "queue": [asdict(t) for t in self.scheduler.tickets()],
