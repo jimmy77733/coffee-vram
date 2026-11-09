@@ -38,6 +38,7 @@ class Settings:
     show_network: bool = True
     show_gpu_temp: bool = True
     show_model_stats: bool = True
+    show_active_model: bool = True
 
 
 _CHOICES: dict[str, tuple[str, ...]] = {

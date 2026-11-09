@@ -25,6 +25,8 @@ const EN = {
   models: 'Loaded models', noModels: 'No models loaded', inRam: '+{gb} GB in system RAM', pinned: 'pinned',
   staysLoaded: 'stays loaded', minutesLeft: '{n} min left', unload: 'Unload', confirmUnload: 'Unload?',
   ctx: 'ctx {used}/{max}', ctxMax: 'ctx {max}', tps: '{n} tok/s',
+  active: 'In use', activeLocal: 'local', activeCloud: 'cloud',
+  chipActive: '{model}',
   queue: 'Queue', queueEmpty: 'No calls waiting', running: 'running', queued: 'waiting', seconds: '{n}s',
   history: 'Last 15 minutes', events: 'Recent', noEvents: 'Nothing yet',
   perf: 'Performance', petToggleOn: 'Hide performance pet', petToggleOff: 'Show performance pet',
@@ -50,6 +52,8 @@ const LOCALES = {
     models: '已載入模型', noModels: '沒有載入的模型', inRam: '+{gb} GB 在系統記憶體', pinned: '常駐',
     staysLoaded: '持續載入', minutesLeft: '剩 {n} 分鐘', unload: '卸載', confirmUnload: '確定卸載？',
     ctx: '上下文 {used}/{max}', ctxMax: '上下文 {max}', tps: '{n} tok/s',
+    active: '目前使用', activeLocal: '本機', activeCloud: '雲端',
+    chipActive: '{model}',
     queue: '佇列', queueEmpty: '沒有等待中的呼叫', running: '執行中', queued: '等待中',
     history: '最近 15 分鐘', events: '最近事件', noEvents: '還沒有事件',
     perf: '效能狀態', petToggleOn: '關閉效能寵物', petToggleOff: '開啟效能寵物',
@@ -66,7 +70,7 @@ const PET_PREF_KEY = 'coffee-vram.pet'
 
 // Disk plugins are not scanned by Tailwind; theme variables only.
 const CSS = `
-.coffee-chip{display:flex;align-items:center;gap:4px;font-variant-numeric:tabular-nums;flex-wrap:wrap;max-width:min(72vw,720px)}
+.coffee-chip{display:flex;align-items:center;gap:4px;font-variant-numeric:tabular-nums;flex-wrap:nowrap;max-width:min(72vw,720px);overflow:hidden}
 .coffee-chip-mark{color:var(--ui-text-tertiary);flex-shrink:0}
 .coffee-chip[data-level=warn] .coffee-chip-mark{color:var(--ui-yellow)}
 .coffee-chip[data-level=hold] .coffee-chip-mark{color:var(--ui-red)}
@@ -79,17 +83,28 @@ const CSS = `
 .coffee-chip-cpu{color:#bb9af7}
 .coffee-chip-net{color:#73daca}
 .coffee-chip-ctx{color:#c0caf5}
+.coffee-chip-model{color:#e0af68;max-width:min(28em,42vw);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex-shrink:0}
 .coffee-chip[data-level=off] .coffee-chip-gpu,
 .coffee-chip[data-level=off] .coffee-chip-util,
 .coffee-chip[data-level=off] .coffee-chip-temp,
 .coffee-chip[data-level=off] .coffee-chip-ram,
 .coffee-chip[data-level=off] .coffee-chip-cpu,
 .coffee-chip[data-level=off] .coffee-chip-net,
-.coffee-chip[data-level=off] .coffee-chip-ctx{color:var(--ui-text-quaternary)}
+.coffee-chip[data-level=off] .coffee-chip-ctx,
+.coffee-chip[data-level=off] .coffee-chip-model{color:var(--ui-text-quaternary)}
+.coffee-active-head{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:6px}
+.coffee-active-head .coffee-heading{margin-bottom:0}
+.coffee-active-route{font-size:11px;font-weight:500;color:var(--ui-text-tertiary);white-space:nowrap;flex-shrink:0}
+.coffee-active-stats{display:block;font-size:11px;line-height:15px;color:var(--ui-text-tertiary);margin-top:2px;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .coffee-popover{width:340px;max-width:calc(100vw - 24px);max-height:calc(100dvh - 120px);overflow-y:auto}
 .coffee-panel{display:flex;flex-direction:column;gap:14px;padding:10px;font-size:12px;line-height:17px;color:var(--ui-text-secondary)}
 .coffee-pane{height:100%;overflow-y:auto}
-.coffee-heading{font-size:11px;font-weight:600;letter-spacing:.02em;color:var(--ui-text-tertiary);margin-bottom:4px}
+.coffee-heading{font-size:13px;font-weight:650;letter-spacing:.03em;margin:0 0 6px;line-height:18px}
+.coffee-heading[data-tone=perf]{color:#9ece6a}
+.coffee-heading[data-tone=active]{color:#e0af68}
+.coffee-heading[data-tone=models]{color:#7aa2f7}
+.coffee-heading[data-tone=queue]{color:#bb9af7}
+.coffee-heading[data-tone=events]{color:#7dcfff}
 .coffee-figure{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
 .coffee-figure strong{font-size:15px;font-weight:600;color:var(--ui-text-primary);font-variant-numeric:tabular-nums}
 .coffee-device{display:block;font-size:10px;line-height:13px;font-weight:500;color:var(--ui-text-quaternary);margin-bottom:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
@@ -134,6 +149,120 @@ const fill = (text, values) => text.replace(/\{(\w+)\}/g, (_, key) => String(val
 const clock = at => new Date(at * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
 const kTokens = n => n >= 1000 ? `${(n / 1000).toFixed(n >= 10000 ? 0 : 1)}K` : String(n)
 const netRate = bps => bps >= 1e6 ? `${(bps / 1e6).toFixed(1)} MB/s` : bps >= 1000 ? `${(bps / 1000).toFixed(0)} KB/s` : `${Math.round(bps)} B/s`
+const shortModel = name => {
+  if (!name) return ''
+  // Prefer the leaf slug (drop provider prefixes like anthropic/).
+  const base = String(name).split('/').pop()
+  // Keep normal chat model ids intact; only clip extreme outliers.
+  return base.length > 48 ? `${base.slice(0, 46)}…` : base
+}
+
+const PROVIDER_LABELS = {
+  ollama: 'Ollama',
+  custom: 'Ollama',
+  openrouter: 'OpenRouter',
+  anthropic: 'Anthropic',
+  openai: 'OpenAI',
+  google: 'Google',
+  gemini: 'Google',
+  'antigravity-subscription-directsdk': 'Antigravity',
+  'antigravity-oauth': 'Antigravity',
+  antigravity: 'Antigravity'
+}
+
+function readDesktopProvider() {
+  try {
+    const connectionId = host.state.connectionId?.get?.() || ''
+    const profile = host.state.profile?.get?.() || 'default'
+    const keys = []
+    if (connectionId) {
+      keys.push(
+        `hermes.desktop.composer.provider.registry.${encodeURIComponent(connectionId)}.${encodeURIComponent(profile)}`
+      )
+    }
+    keys.push('hermes.desktop.composer.provider')
+    for (const key of keys) {
+      const value = localStorage.getItem(key)
+      if (value && value.trim()) return value.trim()
+    }
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i)
+      if (!key || !key.startsWith('hermes.desktop.composer.provider')) continue
+      const value = localStorage.getItem(key)
+      if (value && value.trim()) return value.trim()
+    }
+  } catch {
+    /* ignore storage access errors */
+  }
+  return ''
+}
+
+function formatProvider(provider, local, t) {
+  if (provider) {
+    const key = String(provider).trim()
+    const mapped = PROVIDER_LABELS[key.toLowerCase()]
+    if (mapped) return mapped
+    if (/antigravity/i.test(key)) return 'Antigravity'
+    return key
+  }
+  if (local === true) return t('activeLocal')
+  if (local === false) return t('activeCloud')
+  return ''
+}
+
+function modelsMatch(a, b) {
+  if (!a || !b) return false
+  return a === b || shortModel(a) === shortModel(b)
+}
+
+function findLoadedMatch(snap, modelName) {
+  if (!modelName || !Array.isArray(snap?.loaded)) return null
+  return snap.loaded.find(model => modelsMatch(model.name, modelName)) || null
+}
+
+/** Composer picker wins for display; enrich with backend / localStorage provider. */
+function resolveActive(snap, desktopModel) {
+  if (snap && snap.show_active_model === false) return null
+  const picked = String(desktopModel || '').trim()
+  const backend = snap && snap.active && snap.active.model ? snap.active : null
+  const desktopProvider = readDesktopProvider()
+  if (picked) {
+    const same = backend && modelsMatch(backend.model, picked)
+    const local = same ? backend.local : (findLoadedMatch(snap, picked) ? true : null)
+    return {
+      model: picked,
+      provider: (same && backend.provider) || desktopProvider || null,
+      local,
+      source: 'desktop'
+    }
+  }
+  return backend
+}
+
+function activeStatsLabel(usage, loaded, t, showStats) {
+  if (showStats === false) return ''
+  const used = usage?.context_used ?? loaded?.prompt_tokens ?? null
+  const max = usage?.context_max ?? loaded?.context_length ?? null
+  const tpsRaw = usage?.avg_tps ?? loaded?.tps
+  const bits = []
+  if (max) {
+    const nUsed = used || 0
+    const bar = ctxBar(nUsed, max)
+    const base = nUsed
+      ? fill(t('ctx'), { used: kTokens(nUsed), max: kTokens(max) })
+      : fill(t('ctxMax'), { max: kTokens(max) })
+    bits.push(bar ? `${base} ${bar.bar} ${bar.pct}%` : base)
+  }
+  if (tpsRaw != null && tpsRaw !== '') {
+    const n = typeof tpsRaw === 'number' ? Math.round(tpsRaw * 10) / 10 : tpsRaw
+    bits.push(fill(t('tps'), { n }))
+  }
+  return bits.join(' · ')
+}
+
+function Heading({ tone, children }) {
+  return jsx('div', { className: 'coffee-heading', 'data-tone': tone, children })
+}
 
 /** Text progress bar like Hermes context chip: [████░░░░░░] 56% */
 function ctxBar(used, total) {
@@ -375,6 +504,7 @@ function ModelRow({ model, busy, store, showStats }) {
     const timer = setTimeout(() => setArmed(false), 3000)
     return () => clearTimeout(timer)
   }, [armed])
+  // Context / tok/s live on「目前使用」when this model is the active route.
   const ctxLabel = (() => {
     if (!showStats || !model.context_length) return ''
     const used = model.prompt_tokens || 0
@@ -902,7 +1032,7 @@ function PetRun({ snap, backendOffline, enabled, onToggle }) {
 
   return jsxs('div', { className: 'coffee-pet', children: [
     jsxs('div', { className: 'coffee-pet-head', children: [
-      jsx('div', { className: 'coffee-heading', children: t('perf') }),
+      jsx(Heading, { tone: 'perf', children: t('perf') }),
       jsx(Button, {
         variant: 'ghost', size: 'micro', className: 'coffee-pet-toggle',
         'data-on': enabled || undefined,
@@ -927,11 +1057,18 @@ function Panel({ store }) {
   const offline = useValue(store.offline)
   const feed = useValue(store.feed)
   const petOn = useValue(store.petOn)
+  const desktopModel = useValue(host.state.model)
+  const usage = useValue(host.state.focusedUsage)
   if (!snap) {
     return jsx('div', { className: 'coffee-panel', children: jsx('div', { className: 'coffee-empty', children: offline ? t('offline') : '…' }) })
   }
   const busy = new Set(snap.queue.filter(item => item.state === 'running').map(item => item.model))
   const now = Date.now() / 1000
+  const active = resolveActive(snap, desktopModel)
+  const provider = active ? formatProvider(active.provider, active.local, t) : ''
+  const loadedMatch = findLoadedMatch(snap, active?.model)
+  const showStats = snap.show_model_stats !== false
+  const stats = activeStatsLabel(usage, loadedMatch, t, showStats)
   return jsxs('div', { className: 'coffee-panel', children: [
     offline && jsx('div', { className: 'coffee-alert', 'data-level': 'alert', role: 'status', children: t('offline') }),
     !snap.ollama_up && jsx('div', { className: 'coffee-alert', role: 'status', children: t('ollamaDown') }),
@@ -939,16 +1076,34 @@ function Panel({ store }) {
     jsx(PetRun, {
       snap, backendOffline: offline, enabled: petOn, onToggle: store.setPetOn
     }),
+    active && active.model && jsxs('div', { children: [
+      jsxs('div', { className: 'coffee-active-head', children: [
+        jsx(Heading, { tone: 'active', children: t('active') }),
+        provider
+          ? jsx('span', { className: 'coffee-active-route', title: active.provider || provider, children: provider })
+          : null
+      ] }),
+      jsxs('div', { className: 'coffee-row', children: [
+        jsxs('div', { className: 'coffee-row-main', children: [
+          jsx('span', { className: 'coffee-name', title: active.model, children: active.model }),
+          stats ? jsx('span', { className: 'coffee-active-stats', title: stats, children: stats }) : null
+        ] })
+      ] })
+    ] }),
     jsxs('div', { children: [
-      jsx('div', { className: 'coffee-heading', children: t('models') }),
+      jsx(Heading, { tone: 'models', children: t('models') }),
       snap.loaded.length
         ? snap.loaded.map(model => jsx(ModelRow, {
-          model, busy: busy.has(model.name), store, showStats: snap.show_model_stats !== false
+          model,
+          busy: busy.has(model.name),
+          store,
+          // Stats for the active model live under「目前使用」only.
+          showStats: showStats && !(active && modelsMatch(model.name, active.model))
         }, model.name))
         : jsx('div', { className: 'coffee-empty', children: t('noModels') })
     ] }),
     jsxs('div', { children: [
-      jsx('div', { className: 'coffee-heading', children: t('queue') }),
+      jsx(Heading, { tone: 'queue', children: t('queue') }),
       snap.queue.length
         ? snap.queue.map(item => jsxs('div', { className: 'coffee-row', children: [
           jsx('span', { className: 'coffee-row-main coffee-name', children: item.model }),
@@ -958,7 +1113,7 @@ function Panel({ store }) {
         : jsx('div', { className: 'coffee-empty', children: snap.shared_queue ? t('queueEmpty') : t('noSharedQueue') })
     ] }),
     snap.mode === 'advanced' && jsxs('div', { children: [
-      jsx('div', { className: 'coffee-heading', children: t('events') }),
+      jsx(Heading, { tone: 'events', children: t('events') }),
       feed.length
         ? feed.map(event => jsxs('div', { className: 'coffee-row', children: [
           jsx('span', { className: 'coffee-dot', 'data-level': event.level }),
@@ -970,43 +1125,41 @@ function Panel({ store }) {
   ] })
 }
 
-function chipParts(snap, t) {
+function chipParts(snap, t, desktopModel, usage) {
   // Mirror the info-panel toggles: only append metrics the user enabled in settings.
   if (!snap) return []
-  const host = snap.host || {}
+  const hostStats = snap.host || {}
   const parts = []
+  const active = resolveActive(snap, desktopModel)
+  if (active && active.model) {
+    parts.push({
+      kind: 'model',
+      text: fill(t('chipActive'), { model: shortModel(active.model) })
+    })
+  }
   if (snap.total) {
     parts.push({ kind: 'gpu', text: fill(t('chipMem'), { pct: Math.round(snap.used_pct) }) })
-    const util = host.gpu_util_pct
+    const util = hostStats.gpu_util_pct
     parts.push({ kind: 'util', text: fill(t('chipCompute'), { pct: util == null ? '—' : `${Math.round(util)}%` }) })
   }
-  if (snap.show_gpu_temp !== false && host.gpu_temp_c != null) {
-    parts.push({ kind: 'temp', text: fill(t('temp'), { temp: host.gpu_temp_c }) })
+  if (snap.show_gpu_temp !== false && hostStats.gpu_temp_c != null) {
+    parts.push({ kind: 'temp', text: fill(t('temp'), { temp: hostStats.gpu_temp_c }) })
   }
-  if (snap.show_system_ram !== false && host.ram_total) {
-    parts.push({ kind: 'ram', text: fill(t('chipRam'), { pct: Math.round(host.ram_pct || 0) }) })
+  if (snap.show_system_ram !== false && hostStats.ram_total) {
+    parts.push({ kind: 'ram', text: fill(t('chipRam'), { pct: Math.round(hostStats.ram_pct || 0) }) })
   }
-  if (snap.show_cpu !== false && host.cpu_pct != null) {
-    parts.push({ kind: 'cpu', text: fill(t('chipCpu'), { pct: Math.round(host.cpu_pct) }) })
+  if (snap.show_cpu !== false && hostStats.cpu_pct != null) {
+    parts.push({ kind: 'cpu', text: fill(t('chipCpu'), { pct: Math.round(hostStats.cpu_pct) }) })
   }
-  if (snap.show_network !== false && host.net_bps != null) {
-    parts.push({ kind: 'net', text: fill(t('chipNet'), { rate: netRate(host.net_bps) }) })
+  if (snap.show_network !== false && hostStats.net_bps != null) {
+    parts.push({ kind: 'net', text: fill(t('chipNet'), { rate: netRate(hostStats.net_bps) }) })
   }
-  if (snap.show_model_stats !== false && Array.isArray(snap.loaded)) {
-    const model = snap.loaded.find(m => m.context_length || m.tps != null)
-    if (model) {
-      if (model.context_length) {
-        const used = model.prompt_tokens || 0
-        const bar = ctxBar(used, model.context_length)
-        const label = used
-          ? fill(t('ctx'), { used: kTokens(used), max: kTokens(model.context_length) })
-          : fill(t('ctxMax'), { max: kTokens(model.context_length) })
-        parts.push({
-          kind: 'ctx',
-          text: bar ? `${label} ${bar.bar} ${bar.pct}%` : label
-        })
-      }
-      if (model.tps != null) parts.push({ kind: 'ctx', text: fill(t('tps'), { n: model.tps }) })
+  if (snap.show_model_stats !== false) {
+    const loaded = findLoadedMatch(snap, active?.model)
+      || (Array.isArray(snap.loaded) ? snap.loaded.find(m => m.context_length || m.tps != null) : null)
+    const stats = activeStatsLabel(usage, loaded, t, true)
+    if (stats) {
+      stats.split(' · ').forEach(text => parts.push({ kind: 'ctx', text }))
     }
   }
   return parts
@@ -1024,9 +1177,11 @@ function Chip({ store, open }) {
   const t = usePluginI18n(ID)
   const snap = useValue(store.status)
   const offline = useValue(store.offline)
+  const desktopModel = useValue(host.state.model)
+  const usage = useValue(host.state.focusedUsage)
   const isOpen = useValue(open)
   const level = memLevel(snap, offline)
-  const parts = chipParts(snap, t)
+  const parts = chipParts(snap, t, desktopModel, usage)
   const label = parts.map(p => p.text).join(' · ') || '—'
   const children = [jsx('span', { className: 'coffee-chip-mark', 'aria-hidden': true, children: '◆', key: 'mark' })]
   parts.forEach((part, i) => {

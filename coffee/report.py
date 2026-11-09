@@ -19,6 +19,10 @@ def status_line(status: dict[str, Any]) -> str:
     models = ", ".join(f"{m['name']} {gb(m['size_vram'])} GB" for m in status["loaded"]) or "no models loaded"
     queued = sum(1 for t in status["queue"] if t["state"] == "queued")
     parts = [gauge, models, f"queue {queued}", f"warn {status['warn_pct']}% · hold {status['hold_pct']}%"]
+    active = status.get("active")
+    if active and active.get("model"):
+        route = active.get("provider") or ("local" if active.get("local") else "cloud")
+        parts.insert(1, f"using {active['model']} ({route})")
     if not status["ollama_up"]:
         parts.insert(1, "Ollama not answering")
     return " · ".join(parts)
@@ -74,6 +78,11 @@ def tool_payload(status: dict[str, Any]) -> dict[str, Any]:
         "gpu_temp_c": host.get("gpu_temp_c"),
         "level": status["level"],
         "ollama_reachable": status["ollama_up"],
+        "active_model": ({
+            "name": (status.get("active") or {}).get("model"),
+            "provider": (status.get("active") or {}).get("provider"),
+            "local": (status.get("active") or {}).get("local"),
+        } if status.get("active") else None),
         "loaded_models": [{
             "name": m["name"], "gpu_gb": round(m["size_vram"] / GIB, 1),
             "context_length": m.get("context_length"), "prompt_tokens": m.get("prompt_tokens"),

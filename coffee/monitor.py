@@ -14,6 +14,7 @@ from collections import deque
 from dataclasses import asdict
 from typing import Any, Callable, Mapping
 
+from . import active_state
 from .estimator import Estimate, effective_context, estimate
 from .gpu import GpuBackend, open_backend
 from .hoststats import HostSampler
@@ -83,6 +84,8 @@ class Monitor:
         self._pending: dict[str, tuple[Ticket, float]] = {}
         self._partial_noted: set[str] = set()
         self._call_stats: dict[str, dict[str, Any]] = {}
+        # Last Hermes LLM route seen (local Ollama or any cloud provider).
+        self._active: dict[str, Any] | None = None
         self._host = HostSampler()
         self._thread: threading.Thread | None = None
         self._stop = threading.Event()
@@ -280,9 +283,67 @@ class Monitor:
         if entry is not None:
             self.scheduler.release(entry[0])
 
+    def note_active(self, model: str, *, provider: str | None = None, base_url: str | None = None,
+                    platform: str | None = None, session_id: str | None = None) -> None:
+        """Remember the Hermes route currently in use (Ollama or cloud)."""
+        if not model:
+            return
+        local = same_endpoint(base_url, self.settings().ollama_url)
+        provider_name = (provider or "").strip() or ("ollama" if local else "cloud")
+        payload = {
+            "model": model,
+            "provider": provider_name,
+            "base_url": (base_url or "").rstrip("/") or None,
+            "platform": (platform or "").strip() or None,
+            "session_id": (session_id or "").strip() or None,
+            "local": local,
+            "at": time.time(),
+            "source": "live",
+        }
+        with self._lock:
+            self._active = payload
+        # Dashboard often runs in another process (shared_queue=false); persist for it.
+        active_state.write_active(payload)
+
+    def _persisted_active(self) -> dict[str, Any] | None:
+        data = active_state.read_active(now=time.time())
+        return dict(data) if data else None
+
+    def _configured_active(self) -> dict[str, Any] | None:
+        """Fallback when no LLM call has been observed yet: Hermes config default model."""
+        try:
+            from hermes_cli.config import load_config_readonly
+            cfg = load_config_readonly() or {}
+        except Exception:
+            return None
+        model_cfg = cfg.get("model") if isinstance(cfg, dict) else None
+        if not isinstance(model_cfg, dict):
+            return None
+        name = str(model_cfg.get("default") or model_cfg.get("model") or "").strip()
+        if not name:
+            return None
+        provider = str(model_cfg.get("provider") or "").strip() or "unknown"
+        base = str(model_cfg.get("base_url") or "").strip() or None
+        local = same_endpoint(base, self.settings().ollama_url) if base else provider in {
+            "ollama", "custom", "llamacpp", "lmstudio", "vllm"
+        }
+        return {
+            "model": name,
+            "provider": provider,
+            "base_url": base.rstrip("/") if base else None,
+            "platform": None,
+            "session_id": None,
+            "local": bool(local),
+            "at": None,
+            "source": "config",
+        }
+
     def note_call(self, model: str, *, usage: Mapping[str, Any] | None, api_duration: float,
-                  base_url: str | None) -> None:
-        """Record last prompt size and output tokens/sec for a local Ollama call."""
+                  base_url: str | None, provider: str | None = None,
+                  platform: str | None = None, session_id: str | None = None) -> None:
+        """Record call stats for local Ollama; always refresh the active-route display."""
+        self.note_active(model, provider=provider, base_url=base_url,
+                         platform=platform, session_id=session_id)
         if not model or not same_endpoint(base_url, self.settings().ollama_url):
             return
         usage = usage or {}
@@ -345,6 +406,10 @@ class Monitor:
         host = self._host.read(self.gpu())
         with self._lock:
             stats = dict(self._call_stats)
+            live = dict(self._active) if self._active else None
+        active = None
+        if s.show_active_model:
+            active = live or self._persisted_active() or self._configured_active()
         loaded = []
         for m in snap.loaded.values():
             call = stats.get(m.name, {})
@@ -365,6 +430,7 @@ class Monitor:
             "show_system_ram": s.show_system_ram, "show_cpu": s.show_cpu,
             "show_network": s.show_network, "show_gpu_temp": s.show_gpu_temp,
             "show_model_stats": s.show_model_stats,
+            "show_active_model": s.show_active_model,
             "host": {
                 "ram_total": host.ram_total, "ram_used": host.ram_used,
                 "ram_pct": round(host.ram_pct, 1),
@@ -374,6 +440,7 @@ class Monitor:
                 "gpu_util_pct": None if host.gpu_util_pct is None else round(host.gpu_util_pct, 1),
                 "gpu_name": host.gpu_name, "cpu_name": host.cpu_name, "ram_name": host.ram_name,
             },
+            "active": active,
             "loaded": loaded,
             "queue": [asdict(t) for t in self.scheduler.tickets()],
             "last_event": self._seq,

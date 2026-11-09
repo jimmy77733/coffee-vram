@@ -74,7 +74,35 @@ def test_note_call_records_context_and_tokens_per_second():
     monitor.note_call("qwen3.5:9b", usage={"prompt_tokens": 1200, "output_tokens": 80},
                       api_duration=2.0, base_url="http://127.0.0.1:11434/v1")
     monitor.note_call("cloud", usage={"prompt_tokens": 99, "output_tokens": 9},
-                      api_duration=1.0, base_url="https://openrouter.ai/api/v1")
+                      api_duration=1.0, base_url="https://openrouter.ai/api/v1",
+                      provider="openrouter")
     row = monitor.status()["loaded"][0]
     assert row["prompt_tokens"] == 1200 and row["tps"] == 40.0
     assert "cloud" not in monitor._call_stats
+    active = monitor.status()["active"]
+    assert active["model"] == "cloud" and active["provider"] == "openrouter"
+    assert active["local"] is False and active["source"] == "live"
+
+
+def test_note_active_tracks_cloud_and_local_routes(tmp_path, monkeypatch):
+    from coffee_vram_plugin.coffee import active_state
+
+    monkeypatch.setattr(active_state, "_hermes_home", lambda: tmp_path)
+    monitor, _ = make_monitor(Pool())
+    monitor.note_active("anthropic/claude-sonnet-4", provider="openrouter",
+                        base_url="https://openrouter.ai/api/v1", platform="desktop")
+    active = monitor.status()["active"]
+    assert active["model"] == "anthropic/claude-sonnet-4"
+    assert active["provider"] == "openrouter" and active["local"] is False
+    assert (tmp_path / "coffee-vram-active.json").is_file()
+    # Fallback monitor (other process) picks up the persisted live route.
+    other, _ = make_monitor(Pool())
+    assert other.status()["active"]["model"] == "anthropic/claude-sonnet-4"
+    monitor.note_active("qwen3.5:9b", provider="custom",
+                        base_url="http://127.0.0.1:11434/v1")
+    local = monitor.status()["active"]
+    assert local["model"] == "qwen3.5:9b" and local["local"] is True
+    hidden, _ = make_monitor(Pool(), {"show_active_model": False})
+    hidden.note_active("x", provider="openai", base_url="https://api.openai.com/v1")
+    assert hidden.status()["active"] is None
+    assert hidden.status()["show_active_model"] is False

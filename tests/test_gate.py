@@ -35,6 +35,19 @@ def test_remote_calls_pass_untouched():
     assert result == {"ok": "m"} and calls == ["m"] and client.calls == []
 
 
+def test_cloud_call_records_active_without_gating():
+    monitor, client = make_monitor(Pool())
+    gate = make_gate(monitor)
+    result = gate(request={}, next_call=lambda: {"ok": True}, model="anthropic/claude-sonnet-4",
+                  base_url="https://openrouter.ai/api/v1", provider="openrouter",
+                  platform="desktop", session_id="s1")
+    assert result == {"ok": True} and client.calls == []
+    active = monitor.status()["active"]
+    assert active["model"] == "anthropic/claude-sonnet-4"
+    assert active["provider"] == "openrouter" and active["local"] is False
+    assert active["platform"] == "desktop"
+
+
 def test_local_call_that_fits_runs_once_and_frees_its_slot():
     monitor, _ = make_monitor(Pool())
     result, calls = call(make_gate(monitor))

@@ -119,3 +119,8 @@ config_schema:
     default: true
     label: "Show context and token speed"
     description: "Per loaded model: configured context, last prompt size, and output tokens/sec."
+  show_active_model:
+    type: bool
+    default: true
+    label: "Show active Hermes model"
+    description: "Chip and panel show the model Hermes is currently using (cloud or local), separate from Ollama's loaded list."

@@ -137,9 +137,14 @@ def _wait_for_room(monitor: Monitor, s: Settings, ticket: Ticket, est) -> None:
 
 def make_gate(monitor: Monitor) -> Callable[..., Any]:
     def coffee_llm_gate(*, request: Any = None, next_call: Any = None, model: str | None = None,
-                        base_url: str | None = None, session_id: str = "", api_request_id: str = "",
-                        **_: Any) -> Any:
+                        base_url: str | None = None, provider: str | None = None,
+                        platform: str | None = None, session_id: str = "",
+                        api_request_id: str = "", **_: Any) -> Any:
         s = monitor.settings()
+        # Record every Hermes route (cloud or local) before the Ollama-only gate.
+        if model:
+            monitor.note_active(model, provider=provider, base_url=base_url,
+                                platform=platform, session_id=session_id)
         if not model or not same_endpoint(base_url, s.ollama_url):
             return _proceed(next_call)
         monitor.ensure_started()
