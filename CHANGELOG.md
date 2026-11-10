@@ -8,29 +8,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.3] - 2026-11-10
 
 ### Fixed
-- **Catalog compliance**: Removed reading of Desktop app's internal localStorage (`hermes.desktop.composer.provider*` keys) to comply with Hermes plugin catalog rule 8. The provider label in the Desktop panel now relies solely on backend data from `snap.active.provider` (provided by `coffee/monitor.py` via `note_active()`).
+- **Catalog compliance**: Removed `readDesktopProvider()`, which read the Desktop app's internal localStorage (`hermes.desktop.composer.provider*` keys), to comply with Hermes plugin catalog rule 8. The provider label in the Desktop panel now relies solely on backend data from `snap.active.provider` (provided by `coffee/monitor.py` via `note_active()`).
 
 ### Changed
-- Desktop plugin no longer probes `localStorage` for app-internal composer state
-- Provider display now uses only SDK-provided state and backend monitoring data
+- Desktop plugin no longer probes `localStorage` for app-internal composer state. The pet visibility preference `coffee-vram.pet` is unchanged.
+- Provider display now uses only SDK-provided state and backend monitoring data.
+- Removed the unrecognized `provides_middleware` field from `plugin.yaml`. Middleware is still registered in code via `ctx.register_middleware()` in `coffee/hooks.py`. This clears the Hermes v0.23 warning about an unknown manifest field.
+- Resized `assets/cover.jpg` from 1280×720 (16:9) to 1200×600 (2:1), about 112 KB, for the catalog image ratio.
 
-## [0.1.2] - 2026-11-10
+## [0.1.2] - 2026-11-09
 
 ### Added
-- Desktop chip and panel now show the active Hermes model (cloud or local)
-- Provider label display (Ollama, Anthropic, OpenAI, etc.)
-- Conversation context usage and tokens/second statistics
-- Performance pet visualization showing GPU utilization with weather effects
+- Desktop chip and panel show the active Hermes model (cloud or local) in an **In use** section, separate from Ollama's loaded-models list.
+- Provider label on that section, from `snap.active.provider`.
+- Context usage and tokens/second for the active route on the chip and under In use (current conversation usage and, for a matching loaded model, last-call stats).
+- Cross-process active-route file `coffee-vram-active.json` in the Hermes home directory, so the Desktop or dashboard process can read the model the agent middleware recorded.
+- Setting `show_active_model` (default on).
 
 ### Changed
-- Enhanced status chip with model name, provider, and performance metrics
-- Improved panel layout with active model section separate from loaded models list
+- Status chip can include the active model name alongside the existing memory and host metrics.
+- Panel layout puts the active model section above the loaded models list.
 
-## [0.1.1] - 2026-11-09
+## [0.1.1] - 2026-11-08
+
+### Added
+- Desktop **Performance** pet with decorative weather (clear, rain, snow, thunder, fog). Colour and run speed follow GPU compute utilization. A panel toggle stores on/off in the `localStorage` key `coffee-vram.pet` (on by default).
+- Status chip also shows GPU temperature, system RAM, CPU, and network throughput when those settings are on, plus context usage and tok/s for a loaded Ollama model.
+- Marketplace cover art (`assets/cover.jpg`).
 
 ### Changed
-- Documentation improvements
-- Internal refactoring for better code organization
+- Host-stats polish: panel rows can show GPU, CPU, and RAM capacity or device names.
+- Redacted local paths from measurement dumps.
+
+### Removed
+- 15-minute memory/compute history sparkline from the Desktop panel. The backend still keeps samples and serves `GET /history`.
 
 ## [0.1.0] - 2026-11-08
 
