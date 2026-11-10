@@ -89,7 +89,13 @@ Closing Coffee's only pane disables the plugin, which is how Hermes treats panes
 
 ## Screenshots
 
-<!-- TODO: add screenshots of the Desktop chip, Performance pet, and panel (In use, host stats). -->
+Hermes Desktop with the Coffee chip in the status bar and the panel open:
+
+![Hermes Desktop with the Coffee status chip and panel](assets/screenshots/01-desktop-overview.png)
+
+The panel: GPU, system RAM, CPU and network, the Performance pet, the model in use, loaded models, queue and recent events:
+
+![Coffee panel](assets/screenshots/02-panel.png)
 
 ## Install
 
