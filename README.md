@@ -47,12 +47,38 @@ not fit on the CPU, so Coffee budgets against the carve-out. Measurements are in
 
 ## Where you see it
 
-- **Desktop:** a `◆ 78%` chip in the status bar (yellow past the warn line, red past the hold
-  line). Click it for the panel: a memory gauge with the warn and hold lines, loaded models (with
-  how much runs from system RAM), an unload button, and the queue. Advanced view adds the last
-  15 minutes and recent events. The same panel is also a pane next to Files, and the command
-  palette has "Coffee: show GPU memory". Warnings show as toasts; alerts also send an OS
+- **Desktop:** a status-bar chip that starts with `◆` and, depending on settings and available
+  data, can show the active Hermes model name, GPU memory (`GPU 78%`), GPU compute utilization,
+  GPU temperature, system RAM, CPU, network throughput, context usage, and tokens/second. The
+  mark turns yellow past the warn line and red past the hold line (chip colour follows GPU memory
+  occupancy). Click the chip for the panel; the same panel is also a pane next to Files, and the
+  command palette has "Coffee: show GPU memory". Warnings show as toasts; alerts also send an OS
   notification while Hermes is in the background.
+
+  The panel has:
+
+  - **Gauges.** GPU memory with the warn and hold lines (when `alert_source` is `gpu`), a compute
+    utilization bar, and optional GPU temperature. System RAM used/total (`show_system_ram`), CPU
+    percent (`show_cpu`), and network throughput (`show_network`). Network is Windows-only: the
+    backend meter uses PDH and is unavailable on other platforms. Each of these can be turned off
+    in settings; they are on by default.
+  - **Performance pet.** A small runner under a Performance heading. Its colour (white at idle
+    through blue, amber, and pink/red) and run speed follow GPU compute utilization
+    (`host.gpu_util_pct` from NVML / nvidia-smi, not memory occupancy). Decorative weather —
+    clear, rain, snow, thunder, or fog — cycles on its own and does not follow utilization. The
+    pet is live when the backend is up and at least one Ollama model is loaded; otherwise it
+    shows as offline. A toggle next to the heading hides or shows the canvas. That choice is
+    stored in Desktop `localStorage` under `coffee-vram.pet` (on by default).
+  - **In use** (`show_active_model`, on by default). The model Hermes is currently using, cloud
+    or local, with a provider label from the backend (`snap.active.provider`, recorded by
+    `note_active()`). Context usage and tokens/second appear here and on the chip when
+    `show_model_stats` is on, from the current conversation usage and, for a matching loaded
+    model, the last local call.
+  - **Loaded models**, including how much of a model runs from system RAM, an unload button, and
+    the queue. Advanced view (`mode: advanced`) adds recent events. (The backend still keeps
+    15-minute samples and serves `GET /history`, but the Desktop panel no longer draws that
+    sparkline.)
+
 - **In a session:** `/vram`, `/vram queue`, `/vram models`, `/vram settings`, `/vram evict <model>`.
 - **Terminal:** `hermes coffee-vram status [--json]`, `hermes coffee-vram evict <model> [--yes]`.
 - **The agent:** a `vram_status` tool, so a model can check free GPU memory before switching to
@@ -61,10 +87,20 @@ not fit on the CPU, so Coffee budgets against the carve-out. Measurements are in
 Closing Coffee's only pane disables the plugin, which is how Hermes treats panes. Re-enable it in
 **Capabilities → Plugins**; **Reset layout** brings the pane back.
 
+## Screenshots
+
+Hermes Desktop with the Coffee chip in the status bar and the panel open:
+
+![Hermes Desktop with the Coffee status chip and panel](assets/screenshots/01-desktop-overview.png)
+
+The panel: GPU, system RAM, CPU and network, the Performance pet, the model in use, loaded models, queue and recent events:
+
+![Coffee panel](assets/screenshots/02-panel.png)
+
 ## Install
 
 ```bash
-hermes plugins install <github-user>/hermes-vram-guard
+hermes plugins install jimmy77733/coffee-vram
 hermes plugins enable coffee-vram
 ```
 
@@ -82,7 +118,9 @@ them as a form in **Settings → Plugins → Coffee**. Changes apply within two 
 
 | Key | Default | Meaning |
 |---|---|---|
-| `mode` | `simple` | `advanced` adds history and events to the panel |
+| `mode` | `simple` | `advanced` adds recent events to the panel |
+| `alert_source` | `gpu` | Pool that fires warn/hold toasts and draws those marks on the matching gauge (`gpu` or `system_ram`). The status chip colour still follows GPU memory |
+| `budget_pool` | `gpu` | Pool the call queue budgets against: `gpu`, `system_ram`, or `combined` (GPU free + system RAM free, not the sum of totals) |
 | `warn_pct` | `85` | Notify when a call would push GPU memory past this share |
 | `hold_pct` | `95` | Calls that would go past this share wait in the queue |
 | `on_overflow` | `queue` | `queue`: wait and unload idle models. `wait`: wait without unloading. `warn_only`: notify and run |
@@ -98,6 +136,12 @@ them as a form in **Settings → Plugins → Coffee**. Changes apply within two 
 | `sample_interval_ms` | `1000` | How often GPU memory is read |
 | `watch_external` | `true` | Count other programs' GPU memory |
 | `gpu_total_override_gb` | `0.0` | Set if the driver misreports the GPU pool; 0 detects it |
+| `show_system_ram` | `true` | Show system RAM on the chip and panel |
+| `show_cpu` | `true` | Show CPU on the chip and panel |
+| `show_network` | `true` | Show network throughput (Windows only) |
+| `show_gpu_temp` | `true` | Show GPU temperature on the chip and GPU block |
+| `show_model_stats` | `true` | Show context usage and tokens/second on the chip and panel |
+| `show_active_model` | `true` | Show the active Hermes model (cloud or local) on the chip and in an In use section |
 
 ## Disclosure
 
@@ -109,8 +153,13 @@ them as a form in **Settings → Plugins → Coffee**. Changes apply within two 
   `keep_alive` on loaded ones. May delay local LLM calls up to `queue_timeout_s`; it never cancels
   them.
 - **Background:** one sampling thread in the Hermes process (every second by default).
-- **Data:** keeps recent samples and events in memory only. Reads no credentials and writes no
-  files.
+- **Data:** keeps recent samples and events in memory. To share the active Hermes route with the
+  Desktop or dashboard process, the agent middleware writes `coffee-vram-active.json` in the
+  Hermes home directory (from `get_hermes_home()`, or the `HERMES_HOME` environment variable, or
+  `%LOCALAPPDATA%\hermes` if that folder exists, or `~/.hermes`). The file holds the current
+  model, provider, and related route fields, and is ignored if older than 24 hours. Reads no
+  credentials. The Desktop pet visibility preference is stored in the browser's `localStorage`
+  under `coffee-vram.pet`, not as a file.
 - **Private Hermes import:** `coffee/gate.py` imports `tools.interrupt.is_interrupted` so a queued
   call stops waiting when you interrupt the turn. The import is guarded; if a Hermes release moves
   it, waiting simply ignores interrupts until the call's turn comes.
