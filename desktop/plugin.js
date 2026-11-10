@@ -170,33 +170,6 @@ const PROVIDER_LABELS = {
   antigravity: 'Antigravity'
 }
 
-function readDesktopProvider() {
-  try {
-    const connectionId = host.state.connectionId?.get?.() || ''
-    const profile = host.state.profile?.get?.() || 'default'
-    const keys = []
-    if (connectionId) {
-      keys.push(
-        `hermes.desktop.composer.provider.registry.${encodeURIComponent(connectionId)}.${encodeURIComponent(profile)}`
-      )
-    }
-    keys.push('hermes.desktop.composer.provider')
-    for (const key of keys) {
-      const value = localStorage.getItem(key)
-      if (value && value.trim()) return value.trim()
-    }
-    for (let i = 0; i < localStorage.length; i++) {
-      const key = localStorage.key(i)
-      if (!key || !key.startsWith('hermes.desktop.composer.provider')) continue
-      const value = localStorage.getItem(key)
-      if (value && value.trim()) return value.trim()
-    }
-  } catch {
-    /* ignore storage access errors */
-  }
-  return ''
-}
-
 function formatProvider(provider, local, t) {
   if (provider) {
     const key = String(provider).trim()
@@ -220,18 +193,17 @@ function findLoadedMatch(snap, modelName) {
   return snap.loaded.find(model => modelsMatch(model.name, modelName)) || null
 }
 
-/** Composer picker wins for display; enrich with backend / localStorage provider. */
+/** Composer picker wins for display; enrich with backend provider. */
 function resolveActive(snap, desktopModel) {
   if (snap && snap.show_active_model === false) return null
   const picked = String(desktopModel || '').trim()
   const backend = snap && snap.active && snap.active.model ? snap.active : null
-  const desktopProvider = readDesktopProvider()
   if (picked) {
     const same = backend && modelsMatch(backend.model, picked)
     const local = same ? backend.local : (findLoadedMatch(snap, picked) ? true : null)
     return {
       model: picked,
-      provider: (same && backend.provider) || desktopProvider || null,
+      provider: (same && backend.provider) || null,
       local,
       source: 'desktop'
     }
