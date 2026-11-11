@@ -5,6 +5,11 @@ All notable changes to Coffee VRAM Guard will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.4] - 2026-11-11
+
+### Fixed
+- Restored `provides_middleware: [llm_execution]` in `plugin.yaml`. The call-queue gate is still registered as `llm_execution` middleware in `coffee/hooks.py`, and catalog validation fails with "undeclared middleware registered: llm_execution" when the field is missing.
+
 ## [0.1.3] - 2026-11-10
 
 ### Fixed
@@ -13,7 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Desktop plugin no longer probes `localStorage` for app-internal composer state. The pet visibility preference `coffee-vram.pet` is unchanged.
 - Provider display now uses only SDK-provided state and backend monitoring data.
-- Removed the unrecognized `provides_middleware` field from `plugin.yaml`. Middleware is still registered in code via `ctx.register_middleware()` in `coffee/hooks.py`. This clears the Hermes v0.23 warning about an unknown manifest field.
+- Temporarily removed `provides_middleware` from `plugin.yaml` after Hermes v0.23 warned it was an unrecognized manifest field. Middleware remained registered in code via `ctx.register_middleware()` in `coffee/hooks.py`. Restored in 0.1.4 because catalog validation now requires the declaration.
 - Resized `assets/cover.jpg` from 1280×720 (16:9) to 1200×600 (2:1), about 112 KB, for the catalog image ratio.
 
 ## [0.1.2] - 2026-11-09
